@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProfileController extends Controller
 {
@@ -39,7 +40,7 @@ class ProfileController extends Controller
 
     public function login()
     {
-        if ($user = Auth::attempt(request(['username', 'password']))) {
+        if ($user = JWTAuth::attempt(request(['username', 'password']))) {
             return response()->json([
                 'token' => $user
             ], 200);
