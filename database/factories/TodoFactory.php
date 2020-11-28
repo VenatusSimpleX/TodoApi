@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Models\Todo;
 
-class UserFactory extends Factory
+class TodoFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Todo::class;
 
     /**
      * Define the model's default state.
@@ -23,8 +22,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'username' => $this->faker->userName,
-            'password' => bcrypt('123456')
+            'description' => $description = $this->faker->sentence(),
+            'done' => false,
+            'hash' => sha1(now() . $description),
         ];
     }
 }

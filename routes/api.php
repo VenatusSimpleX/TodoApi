@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +22,21 @@ Route::group(['prefix' => '/profile'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/logout', [ProfileController::class, 'logout']);
         Route::get('/', [ProfileController::class, 'show']);
-        Route::put('/', [ProfileController::class, 'update']);
         Route::delete('/', [ProfileController::class, 'destroy']);
     });
 });
+
+Route::group([
+    'prefix' => '/todos',
+    'middleware' => 'auth:api'
+], function () {
+    Route::get('/', [TodoController::class, 'index']);
+    Route::post('/', [TodoController::class, 'store']);
+    Route::get('/{todo}', [TodoController::class, 'show']);
+    Route::put('/{todo}', [TodoController::class, 'update']);
+    Route::delete('/{todo}', [TodoController::class, 'destroy']);
+});
+
+Route::fallback(function () {
+    return response()->json(['error' => 'Not found'], 404);
+})->name('api.fallback.404');
